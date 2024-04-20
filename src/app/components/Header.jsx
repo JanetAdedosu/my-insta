@@ -20,7 +20,10 @@ export default function Header() {
     const[selectedFile, setSelectedFile] = useState(null);
     const[imageFileUrl, setImageFileUrl] = useState(null);
     const[imageFileUploading, setImageFileUploading] = useState(false);
-        const filePickerRef = useRef(null);
+    const [postUploading, setPostUploading] = useState(false);
+    const [caption, setCaption] = useState('');
+    const filePickerRef = useRef(null);
+    const db = getFirestore(app);
     function addImageToPost(e){
         const file = e.target.files[0];
          if(file){
@@ -64,13 +67,27 @@ export default function Header() {
                 });
             }
         );
-        }
+    }
+    console.log(session);
+    async function handleSubmit(){
+        setPostUploading(true);
+        const docRef = await addDoc(collection(db, 'posts'), {
+        caption,
+        profileImg: session.user.image,
+        image: imageFileUrl,
+        timestamp: serverTimestamp(),
+    });
+    setPostUploading(false);
+    setIsOpen(false);
+    location.reload();
+    }
     return(
         <div className='shadow-sm border-b sticky
         top-0 bg-white z-30 p-3 '>
             <div className="flex justify-between 
             items-center max-w-6xl mx-auto">
                 {/* logo */}
+
                  <Link href="/" className='hidden
                  lg:inline-flex'>
                     <Image src="/Instagram_logo_black.webp" 
@@ -84,6 +101,7 @@ export default function Header() {
                     width={40} height={40} alt='instagram 
                     logo' />
                  </Link>
+                 
                 {/* search input */}
                 <input type="text" placeholder='Search'
                 className='bg-gray-50 border border-gray-200 rounded text-sm w-full
@@ -93,13 +111,14 @@ export default function Header() {
 
                 {session ? (
                     <div className='flex gap-2 items-center'>
-                
                     <IoAddCircleOutline className='text-2xl
                     cursor-pointer transform hover:scale-125
                     transition duration-300 hover:text-red-600'
-                    onClick={() => setIsOpen(true)}/>
+                    onClick={() => setIsOpen(true)}
+                    />
 
-                    <img src={session.user.image} alt={session.user.name} className='h-10 w-10
+                    <img src={session.user.image} 
+                    alt={session.user.name} className='h-10 w-10
                     rounded-full cursor-pointer' 
                     onClick={signOut}
                     />
@@ -107,7 +126,8 @@ export default function Header() {
                 ) : (
                     <button onClick={signIn}
                     className='text-sm font-semibold
-                    text-blue-500'>Log In
+                    text-blue-500'>
+                        Log In
                     </button>
                     ) }
                 
@@ -131,7 +151,8 @@ export default function Header() {
                                 'animated-pulse' : ''}`}
                         />
                         ) : (
-                        <HiCamera onClick={() =>filePickerRef.current.click()} 
+                        <HiCamera 
+                        onClick={() =>filePickerRef.current.click()} 
                         className='text-5xl text-grey-400 cursor-pointer'
                         />
                         )}
@@ -144,13 +165,28 @@ export default function Header() {
                         />
                         
                     </div>
-                    <input type="text" maxLength='150' placeholder='please enter your caption...'
+                    <input 
+                    type="text" 
+                    maxLength='150'
+                    placeholder='please enter your caption...'
                     className='m-4 border-none text-center w-full
-                    focus:ring-0 outline-none'/>
-                    <button disabled className='w-full bg-red-600 text-white p-2 
+                    focus:ring-0 outline-none'
+                    onChange={(e) => setCaption(e.target.value)}
+                    />
+                    <button onClick={handleSubmit}
+                    disabled={
+                        !selectedFile ||
+                        caption.trim() === '' ||
+                        postUploading ||
+                        imageFileUploading
+                      }
+                    className='w-full bg-red-600 text-white p-2 
                     shadow-md rounded-lg hover:brightness-105
                     disabled:bg-gray-200 disabled:cursor-not-allowed
-                    disabled:hover:brightness-100'>Upload Post</button>
+                    disabled:hover:brightness-100'>
+                        Upload Post
+                    </button>
+
                     <AiOutlineClose className='cursor-pointer absolute
                     top-2 right-2 hover:text-red-600 transition
                     duration-300'
