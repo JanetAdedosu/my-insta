@@ -4,16 +4,67 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn, useSession, signOut } from 'next-auth/react';
 import Modal from 'react-modal'
-import { useState } from 'react'
+import { useState ,useRef, useEffect } from 'react'
 import { IoAddCircleOutline } from "react-icons/io5";
 import { HiCamera } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/ai';
+import { app } from '@/app/firebase';
+import { getDownloadURL, getStorage, ref,uploadBytesResumable } from 'firebase/storage';
+import {addDoc,collection, getFirestore, serverTimestamp, } from 'firebase/firestore';
+
 
 export default function Header() {
     const { data: session } = useSession();
     console.log(session);
-    const[isOpen, setIsOpen] = useState(false)
+    const[isOpen, setIsOpen] = useState(false);
+    const[selectedFile, setSelectedFile] = useState(null);
+    const[imageFileUrl, setImageFileUrl] = useState(null);
+    const[imageFileUploading, setImageFileUploading] = useState(false);
+        const filePickerRef = useRef(null);
+    function addImageToPost(e){
+        const file = e.target.files[0];
+         if(file){
+            setSelectedFile(file);
+            setImageFileUrl(URL.createObjectURL(file));
+            console.log(imageFileUrl);
 
+         }
+    }
+    useEffect(() => {
+        if(selectedFile) {
+            uploadImageToStorage()
+        }
+    }, [selectedFile])
+       async function uploadImageToStorage(){
+        setImageFileUploading(true);
+        const storage = getStorage(app);
+        const fileName = new Date().getTime() + '_' +
+        selectedFile.name;
+        const storageRef = ref(storage,fileName);
+        const uploadTask = uploadBytesResumable(storageRef,
+        selectedFile)
+        uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log('Upload is ' + progress + '% done');
+            },
+            (error) => {
+                console.log(error);
+                setImageFileUploading(false);
+                setImageFileUrl(null);
+                setSelectedFile(null);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then
+                ((downloadURL) => {
+                    setImageFileUrl(downloadURL);
+                    setImageFileUploading(false);
+                });
+            }
+        );
+        }
     return(
         <div className='shadow-sm border-b sticky
         top-0 bg-white z-30 p-3 '>
@@ -70,7 +121,28 @@ export default function Header() {
                 >
                     <div className='flex flex-col justify-center
                     items-center h-[100%]'>
-                        <HiCamera className='text-5xl text-grey-400 cursor-pointer'/>
+                        {selectedFile ? (
+                            <img
+                            onClick={() => setSelectedFile(null) }
+                                src={imageFileUrl}
+                                alt='selected file'
+                                className={`w-full max-h-[250px] object-over
+                                cursor-pointer ${imageFileUploading ?
+                                'animated-pulse' : ''}`}
+                        />
+                        ) : (
+                        <HiCamera onClick={() =>filePickerRef.current.click()} 
+                        className='text-5xl text-grey-400 cursor-pointer'
+                        />
+                        )}
+                        <input 
+                        hidden 
+                        ref={filePickerRef} 
+                        type="file" 
+                        accept='image/*' 
+                        onChange={addImageToPost}
+                        />
+                        
                     </div>
                     <input type="text" maxLength='150' placeholder='please enter your caption...'
                     className='m-4 border-none text-center w-full
