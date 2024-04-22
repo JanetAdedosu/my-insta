@@ -37,7 +37,7 @@ export default function Header() {
         if(selectedFile) {
             uploadImageToStorage()
         }
-    }, [selectedFile])
+    }, [selectedFile, uploadImageToStorage])
        async function uploadImageToStorage(){
         setImageFileUploading(true);
         const storage = getStorage(app);
@@ -118,7 +118,10 @@ export default function Header() {
                     />
 
                     <Image src={session.user.image} 
-                    alt={session.user.name} className='h-10 w-10
+                    alt={session.user.name}
+                    width={40} 
+                    height={40}
+                    className='h-10 w-10
                     rounded-full cursor-pointer width={40}
                     height={40}' 
                     onClick={signOut}
@@ -143,10 +146,12 @@ export default function Header() {
                     <div className='flex flex-col justify-center
                     items-center h-[100%]'>
                         {selectedFile ? (
-                            <img
+                            <Image
                             onClick={() => setSelectedFile(null) }
                                 src={imageFileUrl}
                                 alt='selected file'
+                                width={960}
+                                height={1792}
                                 className={`w-full max-h-[250px] object-over
                                 cursor-pointer ${imageFileUploading ?
                                 'animated-pulse' : ''}`}
