@@ -42,7 +42,7 @@ export default function CommentSection({ id }) {
         setComments(snapshot.docs);
       }
     );
-  }, [db]);
+  }, [id]);
 
   return (
     <div>
@@ -53,9 +53,11 @@ export default function CommentSection({ id }) {
               key={id}
               className='flex items-center space-x-2 mb-2 justify-between'
             >
-              <img
+              <Image
                 src={comment.data().userImage}
                 alt='userimage'
+                width={40}
+                height={40}
                 className='h-7 rounded-full object-cover border p-[2px]'
               />
               <p className='text-sm flex-1 truncate'>
@@ -73,9 +75,11 @@ export default function CommentSection({ id }) {
       )}
       {session && (
         <form onSubmit={handleSubmit} className='flex items-center p-4 gap-2'>
-          <img
+          <Image
             src={session.user.image}
             alt='userimage'
+            width={40}
+            height={40}
             className='h-10 w-10 rounded-full border p-[4px] object-cover'
           />
           <input

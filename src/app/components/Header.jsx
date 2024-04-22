@@ -117,9 +117,10 @@ export default function Header() {
                     onClick={() => setIsOpen(true)}
                     />
 
-                    <img src={session.user.image} 
+                    <Image src={session.user.image} 
                     alt={session.user.name} className='h-10 w-10
-                    rounded-full cursor-pointer' 
+                    rounded-full cursor-pointer width={40}
+                    height={40}' 
                     onClick={signOut}
                     />
                 </div>
