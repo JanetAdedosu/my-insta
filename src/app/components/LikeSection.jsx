@@ -18,7 +18,7 @@ export default function LikeSection({id}) {
             setLikes(snapshot.docs);
           });
 
-    }, [db]);
+    }, [id]);
 
     useEffect(() => {
         if (likes.findIndex((like) => like.id === session?.user?.uid) !== -1) {
@@ -26,7 +26,7 @@ export default function LikeSection({id}) {
         } else {
           setHasLiked(false);
         }
-      }, [likes]);
+      }, [likes ,session?.user?.uid]);
 
       async function likePost() {
         console.log(db, id, 'likes', session?.user?.uid);
