@@ -117,13 +117,13 @@ export default function Header() {
                     onClick={() => setIsOpen(true)}
                     />
 
-                    <Image src={session.user.image} 
+                    <Image 
+                    src={session.user.image} 
                     alt={session.user.name}
                     width={40} 
                     height={40}
                     className='h-10 w-10
-                    rounded-full cursor-pointer width={40}
-                    height={40}' 
+                    rounded-full cursor-pointer' 
                     onClick={signOut}
                     />
                 </div>
@@ -147,15 +147,16 @@ export default function Header() {
                     items-center h-[100%]'>
                         {selectedFile ? (
                             <Image
-                            onClick={() => setSelectedFile(null) }
-                                src={imageFileUrl}
-                                alt='selected file'
-                                width={960}
-                                height={1792}
-                                className={`w-full max-h-[250px] object-over
-                                cursor-pointer ${imageFileUploading ?
-                                'animated-pulse' : ''}`}
-                        />
+                                onClick={() => setSelectedFile(null) }
+                                        src={imageFileUrl}
+                                        alt='selected file'
+                                        width={400}
+                                        height={300}
+                                        className={`w-full max-h-[250px] object-over
+                                        cursor-pointer ${imageFileUploading ?
+                                        'animated-pulse' : ''}`}
+                                />
+                                
                         ) : (
                         <HiCamera 
                         onClick={() =>filePickerRef.current.click()} 

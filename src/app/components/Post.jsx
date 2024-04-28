@@ -1,7 +1,8 @@
 import { HiOutlineDotsVertical } from 'react-icons/hi';
 import LikeSection from './LikeSection';
 import CommentSection from './CommentSection';
-import Image from 'next/image';
+import Image from "next/image";
+
 
 
 
@@ -22,6 +23,8 @@ export default function Post({post}){
       <Image
         src={post.image}
         alt={post.caption}
+        width={400}
+        height={300}
         className='object-cover w-full'
       />
         <LikeSection id={post.id} /> 

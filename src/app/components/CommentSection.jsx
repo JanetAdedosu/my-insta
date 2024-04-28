@@ -53,13 +53,15 @@ export default function CommentSection({ id }) {
               key={id}
               className='flex items-center space-x-2 mb-2 justify-between'
             >
-              <Image
-                src={comment.data().userImage}
-                alt='userimage'
-                width={40}
-                height={40}
-                className='h-7 rounded-full object-cover border p-[2px]'
-              />
+              {comment.data().userImage && ( // Check if userImage is available
+            <Image
+              src={comment.data().userImage}
+              alt='userimage'
+              width={10}
+              height={10}
+              className='h-7 rounded-full object-cover border p-[2px]'
+            />
+          )}
               <p className='text-sm flex-1 truncate'>
                 <span className='font-bold text-gray-700'>
                   {comment.data().username}
@@ -78,9 +80,10 @@ export default function CommentSection({ id }) {
           <Image
             src={session.user.image}
             alt='userimage'
-            width={40}
-            height={40}
+            width={10}
+            height={10}
             className='h-10 w-10 rounded-full border p-[4px] object-cover'
+            id={`userImage-${id}`} // Add an id attribute with a unique value
           />
           <input
             type='text'
@@ -88,6 +91,7 @@ export default function CommentSection({ id }) {
             onChange={(e) => setComment(e.target.value)}
             placeholder='Add a comment...'
             className='border-none flex-1 focus:ring-0 outline-none'
+            id="commentInput"
           />
           <button
             disabled={!comment.trim()}
