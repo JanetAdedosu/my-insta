@@ -65,6 +65,6 @@ export default function LikeSection({id}) {
       )}
 
 
-            </div>
+     </div>
     )
 }

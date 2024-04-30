@@ -1,7 +1,7 @@
 import { HiOutlineDotsVertical } from 'react-icons/hi';
 import LikeSection from './LikeSection';
 import CommentSection from './CommentSection';
-import Image from "next/image";
+import image from "next/image";
 
 
 
@@ -10,7 +10,7 @@ export default function Post({post}){
     return(
         <div className='bg-white my-7 border rounded-md'>
             <div className='flex items-center p-5 border-b border-gray-100'>
-        <Image
+        <image
           src={post.profileImg}
           alt={post.username}
           width={48}
@@ -20,7 +20,7 @@ export default function Post({post}){
         <p className='flex-1 font-bold'>{post.username}</p>
         <HiOutlineDotsVertical className='h-5 cursor-pointer' />
       </div>
-      <Image
+      <image
         src={post.image}
         alt={post.caption}
         width={400}

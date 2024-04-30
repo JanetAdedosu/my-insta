@@ -54,7 +54,7 @@ export default function CommentSection({ id }) {
               className='flex items-center space-x-2 mb-2 justify-between'
             >
               {comment.data().userImage && ( // Check if userImage is available
-            <Image
+            <image
               src={comment.data().userImage}
               alt='userimage'
               width={10}
@@ -77,7 +77,7 @@ export default function CommentSection({ id }) {
       )}
       {session && (
         <form onSubmit={handleSubmit} className='flex items-center p-4 gap-2'>
-          <Image
+          <image
             src={session.user.image}
             alt='userimage'
             width={10}
