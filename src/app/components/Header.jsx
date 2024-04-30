@@ -1,6 +1,6 @@
 "use client";
 
-import image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { signIn, useSession, signOut } from 'next-auth/react';
 import Modal from 'react-modal'
@@ -88,14 +88,14 @@ export default function Header() {
 
                  <Link href="/" className='hidden
                  lg:inline-flex'>
-                    <image src="/Instagram_logo_black.webp" 
+                    <Image src="/Instagram_logo_black.webp" 
                     width={96} height={96} alt='instagram 
                     logo' />
                  </Link>
 
                  <Link href="/" className='lg:hidden
                  '>
-                    <image src="/800px-Instagram_logo_2016.webp" 
+                    <Image src="/800px-Instagram_logo_2016.webp" 
                     width={40} height={40} alt='instagram 
                     logo' />
                  </Link>
@@ -115,7 +115,7 @@ export default function Header() {
                     onClick={() => setIsOpen(true)}
                     />
 
-                    <image 
+                    <Image 
                     src={session.user.image} 
                     alt={session.user.name}
                     width={40} 
@@ -144,7 +144,7 @@ export default function Header() {
                     <div className='flex flex-col justify-center
                     items-center h-[100%]'>
                         {selectedFile ? (
-                            <image
+                            <Image
                                 onClick={() => setSelectedFile(null) }
                                         src={imageFileUrl}
                                         alt='selected file'
