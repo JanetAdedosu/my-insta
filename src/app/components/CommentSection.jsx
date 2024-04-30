@@ -42,7 +42,7 @@ export default function CommentSection({ id }) {
         setComments(snapshot.docs);
       }
     );
-  }, [id]);
+  }, [db,id]);
 
   return (
     <div>

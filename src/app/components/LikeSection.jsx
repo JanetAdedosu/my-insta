@@ -18,7 +18,7 @@ export default function LikeSection({id}) {
             setLikes(snapshot.docs);
           });
 
-    }, [id]);
+    }, [db, id]);
 
     useEffect(() => {
         if (likes.findIndex((like) => like.id === session?.user?.uid) !== -1) {
